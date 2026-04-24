@@ -1,90 +1,517 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Santiago Gamboa | Portafolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Santiago Gamboa | Portafolio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: white;
-            text-align: center;
-        }
+  :root {
+    --bg: #080c14;
+    --surface: #0e1420;
+    --surface2: #141b2a;
+    --border: rgba(0,217,255,0.12);
+    --accent: #00d9ff;
+    --accent2: #7b61ff;
+    --text: #e8eaf0;
+    --muted: #7a8599;
+  }
 
-        header {
-            padding: 60px 20px;
-        }
+  html { scroll-behavior: smooth; }
 
-        h1 {
-            font-size: 40px;
-            color: #38bdf8;
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-        p {
-            color: #cbd5f5;
-        }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,217,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,217,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-        }
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb-1 { width: 400px; height: 400px; background: rgba(0,217,255,0.06); top: -100px; right: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(123,97,255,0.07); bottom: 200px; left: -80px; }
 
-        .card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-            width: 280px;
-            transition: 0.3s;
-        }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8,12,20,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
 
-        .card:hover {
-            transform: scale(1.05);
-            background: #334155;
-        }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
 
-        footer {
-            margin-top: 40px;
-            padding: 20px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
-    </style>
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  section { position: relative; z-index: 1; }
+
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    max-width: 900px;
+  }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1.hero-name {
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  h1.hero-name span {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,217,255,0.4);
+  }
+
+  .hero-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .hero-role em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 48px;
+  }
+
+  .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--accent);
+    color: #080c14;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s, transform 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  .btn-ghost {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  #sobre-mi, #tecnologias, #objetivo {
+    padding: 100px 48px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 48px;
+    color: var(--text);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .about-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .about-card-value {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .tech-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(0,217,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .tech-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .tech-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  .tech-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  .tech-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .objetivo-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .objetivo-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+  }
+
+  .objetivo-quote {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .objetivo-quote span { color: var(--accent); }
+
+  .objetivo-frase {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 24px;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 40px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up { animation: fadeUp 0.7s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.25s; opacity: 0; }
+  .delay-3 { animation-delay: 0.4s; opacity: 0; }
+  .delay-4 { animation-delay: 0.55s; opacity: 0; }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    #hero { padding: 100px 20px 60px; }
+    #sobre-mi, #tecnologias, #objetivo { padding: 60px 20px; }
+    .about-grid { grid-template-columns: 1fr; }
+    footer { padding: 24px 20px; }
+    .objetivo-box { padding: 28px; }
+  }
+</style>
 </head>
-
 <body>
 
-<header>
-    <h1>👨‍💻 Santiago Gamboa</h1>
-    <p>Estudiante de Ingeniería en Software | Java | SQL | Web</p>
-</header>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-<section class="container">
+<nav>
+  <span class="nav-logo">SG.dev</span>
+  <div class="nav-links">
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#tecnologias">Stack</a>
+    <a href="#objetivo">Objetivo</a>
+  </div>
+</nav>
 
-    <div class="card">
-        <h2>🚀 Sobre mí</h2>
-        <p>Estudiante de la Universidad Técnica de Ambato (FISEI), actualmente en 4to semestre.</p>
+<section id="hero">
+  <p class="hero-tag fade-up delay-1">Estudiante · UTA · FISEI · 4to semestre</p>
+  <h1 class="hero-name fade-up delay-2">Santiago<br><span>Gamboa</span></h1>
+  <p class="hero-role fade-up delay-3">
+    <em>Desarrollador Web</em> en formación<span class="cursor-blink"></span>
+  </p>
+  <p class="hero-desc fade-up delay-4">
+    Apasionado por construir soluciones eficientes. Me enfoco en escribir código limpio y aprender constantemente mediante la práctica y proyectos reales.
+  </p>
+  <div class="hero-cta fade-up delay-4">
+    <a href="https://github.com/San00ale" class="btn-primary" target="_blank">Ver mis proyectos →</a>
+    <a href="mailto:TU_CORREO@gmail.com" class="btn-ghost">Contactar</a>
+  </div>
+</section>
+
+<section id="sobre-mi">
+  <p class="section-label">// sobre mí</p>
+  <h2 class="section-title">¿Quién soy?</h2>
+  <div class="about-grid">
+    <div class="about-card">
+      <p class="about-card-label">Universidad</p>
+      <p class="about-card-value">Universidad Técnica de Ambato<br>Facultad FISEI</p>
     </div>
-
-    <div class="card">
-        <h2>🛠️ Tecnologías</h2>
-        <p>Java, SQL, HTML, CSS</p>
+    <div class="about-card">
+      <p class="about-card-label">Carrera</p>
+      <p class="about-card-value">Ingeniería en Software<br>4to semestre de 9</p>
     </div>
-
-    <div class="card">
-        <h2>🎯 Objetivo</h2>
-        <p>Convertirme en desarrollador profesional y trabajar en proyectos reales.</p>
+    <div class="about-card">
+      <p class="about-card-label">Edad</p>
+      <p class="about-card-value">20 años<br>Ambato, Ecuador 🇪🇨</p>
     </div>
+    <div class="about-card">
+      <p class="about-card-label">Enfoque actual</p>
+      <p class="about-card-value">Desarrollo web y proyectos prácticos que refuercen mi formación como desarrollador.</p>
+    </div>
+  </div>
+</section>
 
+<section id="tecnologias">
+  <p class="section-label">// stack tecnológico</p>
+  <h2 class="section-title">Tecnologías</h2>
+
+  <p class="tech-cat">Lenguajes</p>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <div class="tech-icon">☕</div>
+      <span class="tech-name">Java</span>
+    </div>
+    <div class="tech-item">
+      <div class="tech-icon" style="color:#f7df1e;">JS</div>
+      <span class="tech-name">JavaScript</span>
+    </div>
+    <div class="tech-item">
+      <div class="tech-icon" style="color:#777bb4;">PHP</div>
+      <span class="tech-name">PHP</span>
+    </div>
+  </div>
+
+  <p class="tech-cat">Desarrollo Web</p>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <div class="tech-icon" style="color:#e34f26;">&lt;/&gt;</div>
+      <span class="tech-name">HTML5</span>
+    </div>
+    <div class="tech-item">
+      <div class="tech-icon" style="color:#1572b6;">#</div>
+      <span class="tech-name">CSS3</span>
+    </div>
+  </div>
+
+  <p class="tech-cat">Herramientas</p>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <div class="tech-icon">🐱</div>
+      <span class="tech-name">GitHub</span>
+    </div>
+    <div class="tech-item">
+      <div class="tech-icon" style="color:#007acc;">&gt;_</div>
+      <span class="tech-name">VS Code</span>
+    </div>
+    <div class="tech-item">
+      <div class="tech-icon">🐧</div>
+      <span class="tech-name">Linux</span>
+    </div>
+    <div class="tech-item">
+      <div class="tech-icon" style="color:#00758f;">DB</div>
+      <span class="tech-name">MySQL</span>
+    </div>
+  </div>
+</section>
+
+<section id="objetivo">
+  <p class="section-label">// objetivo</p>
+  <h2 class="section-title">Mi meta</h2>
+  <div class="objetivo-box">
+    <p class="objetivo-quote">
+      Convertirme en un <span>desarrollador profesional</span> y trabajar en proyectos reales que generen impacto.
+    </p>
+    <p class="objetivo-frase">
+      ❝ Primero haz que funcione, luego hazlo bien, después hazlo rápido. ❞
+    </p>
+  </div>
 </section>
 
 <footer>
-    © 2026 Santiago Gamboa
+  <span class="footer-copy">© 2026 Santiago Gamboa · Ambato, Ecuador</span>
+  <div class="footer-links">
+    <a href="https://github.com/San00ale" target="_blank">GitHub</a>
+    <a href="mailto:TU_CORREO@gmail.com">Email</a>
+  </div>
 </footer>
 
 </body>
